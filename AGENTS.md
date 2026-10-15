@@ -310,3 +310,12 @@ Some lessons require significant RAM (8GB+ recommended):
 - NLP transformer lessons may require significant RAM
 - Training from scratch is educational but time-consuming
 - Transfer learning examples minimize training time
+
+## Cursor Cloud specific instructions
+
+- Lesson Python is the virtualenv at `/opt/ai4beg`. Login shells put that bin directory first via `/etc/profile.d/ai4beg.sh`, so `python`, `jupyter`, and `ai4beg-python` are the lesson interpreter. The Jupyter kernel name is `ai4beg`.
+- PyTorch is pinned to 2.3.1 with torchvision 0.18.1, torchaudio 2.3.1, and torchtext 0.18.0. That is the last torchtext release, and it loads against PyTorch 2.3.
+- The same machine checks out `fahadwebsite` (Next.js) and `skills-github-pages` (a GitHub Actions course with no local process).
+- Boot already starts four dev servers: Next.js on port 3000, the Vue quiz app on port 8080, JupyterLab on port 8888 with an empty token, and the Docsify curriculum on port 4000.
+- Quiz app serve and production build on this Node.js 22 image need `NODE_OPTIONS=--openssl-legacy-provider` and `--skip-plugins @vue/cli-plugin-eslint`. `npm run lint` in `etc/quiz-app` exits with ESLint 9 option errors because Vue CLI 5 still passes removed ESLint options.
+- Stop the Next.js dev server before `npm run build` in `fahadwebsite`. Building while `next dev` is running shares `.next` and the dev server then fails to resolve vendor chunks until `.next` is deleted and the dev server is started again.
